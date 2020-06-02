@@ -1,0 +1,53 @@
+﻿@page
+@model WebApplication1.EditPageModel
+@{
+    Layout = "~/Pages/Shared/_ResturauntEdit.cshtml";
+    ViewData["Title"] = "EditPage";
+
+}
+<h3>General Information</h3>
+<form method="post" asp-route-Img="@Model.Resturaunt.ResturauntPage.Image" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Resturaunt.id" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Buisness Name</label>
+            <input asp-for="Resturaunt.Name" class="form-control" />
+            <span asp-validation-for="Resturaunt.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input type="file" name="FileUpload" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputAddress">Address</label>
+        <input asp-for="Resturaunt.Address.AddressLine1" class="form-control" />
+        <span asp-validation-for="Resturaunt.Address.AddressLine1" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        <input asp-for="Resturaunt.Address.AddressLine2" class="form-control" />
+        <span asp-validation-for="Resturaunt.Address.AddressLine2" class="text-danger"></span>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputCity">City</label>
+            <input asp-for="Resturaunt.Address.City" class="form-control" />
+            <span asp-validation-for="Resturaunt.Address.City" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputState">State</label>
+            <input asp-for="Resturaunt.Address.State" class="form-control" />
+            <span asp-validation-for="Resturaunt.Address.State" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputZip">Zip</label>
+            <input asp-for="Resturaunt.Address.City" class="form-control" />
+            <span asp-validation-for="Resturaunt.Address.City" class="text-danger"></span>
+        </div>
+
+
+        <button type="submit" value="Save" class="btn btn-primary">Save</button>
+    </div>
+</form>
+

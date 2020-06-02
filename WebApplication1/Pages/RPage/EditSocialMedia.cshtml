@@ -1,0 +1,50 @@
+﻿@page
+@model WebApplication1.EditSocialMediaModel
+@{
+    Layout = "~/Pages/Shared/_ResturauntEdit.cshtml";
+    ViewData["Title"] = "EditSocialMedia";
+}
+
+<h3>Social Media</h3>
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputCity">Facebook</label>
+            <input asp-for="Resturaunt.ResturauntPage.Facebook" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.Facebook" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputCity">Instagrgam</label>
+            <input asp-for="Resturaunt.ResturauntPage.Instagram" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.Instagram" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputCity">Twitter</label>
+            <input asp-for="Resturaunt.ResturauntPage.Twitter" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.Twitter" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputCity">Youtube</label>
+            <input asp-for="Resturaunt.ResturauntPage.Youtube" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.Youtube" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputCity">LinkedIn</label>
+            <input asp-for="Resturaunt.ResturauntPage.LinkedIn" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.LinkedIn" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputCity">Yelp</label>
+            <input asp-for="Resturaunt.ResturauntPage.Yelp" class="form-control" />
+            <span asp-validation-for="Resturaunt.ResturauntPage.Yelp" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </div>
+</form>
+
+

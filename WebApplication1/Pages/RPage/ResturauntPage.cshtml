@@ -1,0 +1,643 @@
+﻿@page
+@model WebApplication1.ResturauntPageModel
+@{
+    ViewData["Title"] = "ResturauntPage";
+}
+
+    <head>
+        <link rel="stylesheet" href="~/css/General.css" />
+
+    <script>
+        $(document).ready(function () {
+            $('#DropDownList2').click(function () {
+                var str = "";
+                $("#DropDownList2 :selected").each(function () {
+                    str += $(this).text() + " ";
+                });
+                alert(str);
+            });
+        });
+    </script>
+    </head>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@Model.Resturaunt.Name</h1>
+            <p>@Model.Resturaunt.ResturauntPage.Description</p>
+        </div>
+        <div class="col">
+            <img src="@Model.imageDataURL" style="height: 150px; width: 150px" />
+        </div>
+    </div>
+
+    <br />
+</div>
+
+<!-- Button trigger modal -->
+<form method="post">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PageEditor">
+        Edit Page
+    </button>
+</form>
+
+<div class="container day_row">
+    <div class="row">
+        @{
+            int i = 1;
+            int k = 1;
+            foreach (var d in Model.Resturaunt.ResturauntPage.Days)
+            {
+                <div class="col-md" style="text-align: center">
+                    <div class="card border-dark day">
+                        <div class="card-header">
+                            @d.DayName
+                        </div>
+                        <div class="card-body">
+                            <p>Open: @d.OpenTime</p>
+                            <p>Close: @d.CloseTime</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @{ foreach (var x in d.Deals)
+                                {
+                                    <li class="list-group-item">
+                                        @x.StartTime
+                                        @x.EndTime
+                                        @x.ItemName
+                                        @x.ItemType
+                                        @x.ValueOff
+
+                                        <form method="post">
+                                            <button type="button" on-click="@{Model.Deal = x;} " class="btn btn-primary" data-toggle="modal" data-target="#DealEditor_@k" ><img src="~/icons/gear.svg" /></button>
+                                        </form>
+                                        
+                                        <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Resturaunt.id" asp-route-did="@x.id">
+                                            <button type="submit" class="btn btn-primary"><img src="~/icons/trash.svg" /></button>
+                                        </form>
+                                        
+                                    </li>
+                                    k++;
+                                }
+                            }
+                        </ul>
+                        <!-- Button trigger modal -->
+                        <form method="post">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DealAdder_@i">
+                                Add Deal
+                            </button>
+                        </form>
+                    </div>
+                    <form method="post">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter_@i">
+                            Edit Day
+                        </button>
+                    </form>
+                </div>
+                i++;
+            }
+        }
+    </div>
+</div>
+
+<div class="col-md social_media">
+    <div class="card border-dark day">
+        <div class="card-header">
+            Social Media
+        </div>
+        <div class=" card-body">
+            @{
+                if (Model.Resturaunt.Website != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Website:
+                            @Model.Resturaunt.Website
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Facebook != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Facebook
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Twitter != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Twitter
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Instagram != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Instagram
+                        </li>
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    @{
+        int y = 1;
+        foreach (var x in Model.Deals)
+        {
+            <!-- Modal -->
+            <div class="modal fade" id="DealEditor_@y" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="post" asp-page-handler="Edit" asp-route-id="@Model.Resturaunt.id" asp-route-did="@x.id">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="@x.id" />
+                                        <div class="form-group">
+                                            <label asp-for="@x.StartTime" class="control-label"></label>
+                                            <input asp-for="@x.StartTime" class="form-control" name="StartTime" />
+                                            <span asp-validation-for="@x.StartTime" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@x.EndTime" class="control-label"></label>
+                                            <input asp-for="@x.EndTime" class="form-control" name="EndTime" />
+                                            <span asp-validation-for="@x.EndTime" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@x.ItemName" class="control-label"></label>
+                                            <input asp-for="@x.ItemName" class="form-control" name="ItemName" />
+                                            <span asp-validation-for="@x.ItemName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@x.ItemType" class="control-label"></label>
+                                            <input asp-for="@x.ItemType" class="form-control" name="ItemType" />
+                                            <span asp-validation-for="@x.ItemType" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@x.ValueOff" class="control-label"></label>
+                                            <input asp-for="@x.ValueOff" class="form-control" name="ValueOff" />
+                                            <span asp-validation-for="@x.ValueOff" class="text-danger"></span>
+                                        </div>
+                                        <select class="multiselect" multiple="multiple" id="select1">
+                                            @{
+                                                foreach (var z in Model.Tags)
+                                                {
+                                                    <option value="@z.id">@z.TagName</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            y++;
+        }
+    }
+
+    }
+
+    @{
+        int j = 1;
+        foreach (var d in Model.ResturauntPage.Days)
+        {
+            <div class="modal fade" id="DealAdder_@j" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="post" asp-page-handler="Add" asp-route-id="@Model.Resturaunt.id" asp-route-did="@d.id">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="Deal.id" />
+                                        <div class="form-group">
+                                            <label asp-for="Deal.StartTime" class="control-label"></label>
+                                            <input asp-for="Deal.StartTime" class="form-control" />
+                                            <span asp-validation-for="Deal.StartTime" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Deal.EndTime" class="control-label"></label>
+                                            <input asp-for="Deal.EndTime" class="form-control" />
+                                            <span asp-validation-for="Deal.EndTime" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Deal.ItemName" class="control-label"></label>
+                                            <input asp-for="Deal.ItemName" class="form-control" />
+                                            <span asp-validation-for="Deal.ItemName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Deal.ItemType" class="control-label"></label>
+                                            <input asp-for="Deal.ItemType" class="form-control" />
+                                            <span asp-validation-for="Deal.ItemType" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Deal.ValueOff" class="control-label"></label>
+                                            <input asp-for="Deal.ValueOff" class="form-control" />
+                                            <span asp-validation-for="Deal.ValueOff" class="text-danger"></span>
+                                        </div>
+                                        <select class="multiselect" multiple="multiple" id="select2">
+                                            @{
+                                                foreach (var z in Model.Tags)
+                                                {
+                                                    <option value="@z.id">@z.TagName</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <div class="form-group">
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            j++;
+        }
+    }
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="PageEditor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post" asp-page-handler="Page" asp-route-id="@Model.Resturaunt.id" asp-route-Img="@Model.ResturauntPage.Image" enctype="multipart/form-data">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="ResturauntPage.id" />
+                                <div class="form-group">
+                                    <label asp-for="ResturauntPage.Description" class="control-label"></label>
+                                    <textarea asp-for="ResturauntPage.Description" class="form-control"></textarea>
+                                    <span asp-validation-for="ResturauntPage.Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ResturauntPage.Facebook" class="control-label"></label>
+                                    <input asp-for="ResturauntPage.Facebook" class="form-control">
+                                    <span asp-validation-for="ResturauntPage.Facebook" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ResturauntPage.Twitter" class="control-label"></label>
+                                    <input asp-for="ResturauntPage.Twitter" class="form-control">
+                                    <span asp-validation-for="ResturauntPage.Twitter" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ResturauntPage.Instagram" class="control-label"></label>
+                                    <input asp-for="ResturauntPage.Instagram" class="form-control">
+                                    <span asp-validation-for="ResturauntPage.Instagram" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="FileUpload" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Monday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Monday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Monday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Monday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Monday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Monday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Monday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="1" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Tuesday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Tuesday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Tuesday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Tuesday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Tuesday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Tuesday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Tuesday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="2" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Wendsday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Wendsday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Wendsday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Wendsday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Wendsday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Wendsday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Wendsday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="3" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Thursday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Thursday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Thursday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Thursday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Thursday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Thursday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Thursday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="4" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Friday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Friday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Friday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Friday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Friday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Friday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Friday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="5" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_6" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Saturday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Saturday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Saturday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Saturday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Saturday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Saturday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Saturday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="6" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter_7" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Sunday.id" />
+                                <div class="form-group">
+                                    <label asp-for="Sunday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Sunday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Sunday.OpenTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Sunday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Sunday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Sunday.CloseTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-route-did="7" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+

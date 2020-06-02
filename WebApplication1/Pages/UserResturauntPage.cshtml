@@ -1,0 +1,106 @@
+﻿@page
+@model WebApplication1.UserResturauntPageModel
+@{
+    ViewData["Title"] = "UserResturauntPage";
+}
+<head>
+    <link rel="stylesheet" href="~/css/General.css" />
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@Model.Resturaunt.Name</h1>
+            <p>@Model.Resturaunt.ResturauntPage.Description</p>
+        </div>
+        <div class="col">
+            <img src="@Model.imageDataURL" style="height: 150px; width: 150px" />
+        </div>
+    </div>
+
+    <br />
+</div>
+
+<div class="container day_row">
+    <div class="row">
+        @{
+            int i = 1;
+            int k = 1;
+            foreach (var d in Model.Resturaunt.ResturauntPage.Days)
+            {
+                <div class="col-md" style="text-align: center">
+                    <div class="card border-dark day">
+                        <div class="card-header">
+                            @d.DayName
+                        </div>
+                        <div class="card-body">
+                            <p>Open: @d.OpenTime</p>
+                            <p>Close: @d.CloseTime</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @{ foreach (var x in d.Deals)
+                                {
+                                    <li class="list-group-item">
+                                        @x.StartTime
+                                        @x.EndTime
+                                        @x.ItemName
+                                        @x.ItemType
+                                        @x.ValueOff
+                                    </li>
+                                    k++;
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                i++;
+            }
+        }
+    </div>
+</div>
+<div class="col-md social_media">
+    <div class="card border-dark day">
+        <div class="card-header">
+            Social Media
+        </div>
+        <div class=" card-body">
+            @{
+                if (Model.Resturaunt.Website != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Website:
+                            @Model.Resturaunt.Website
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Facebook != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Facebook
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Twitter != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Twitter
+                        </li>
+                    </ul>
+                }
+                if (Model.ResturauntPage.Instagram != null)
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Facebook:
+                            @Model.ResturauntPage.Instagram
+                        </li>
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+</div>

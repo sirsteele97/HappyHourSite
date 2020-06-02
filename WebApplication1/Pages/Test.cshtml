@@ -1,0 +1,25 @@
+﻿@page
+@model WebApplication1.TestModel
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Test</h1>
+
+<!DOCTYPE html>
+<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"
+      rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js" type="text/javascript"></script>
+<!-- Initialize the plugin: -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example-getting-started').multiselect();
+    });
+</script>
+
+@Html.DropDownList("FacilityID", null, string.Empty, new { @class = "selectpicker" })

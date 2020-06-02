@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "./_Layout.cshtml";
+}
+    <div class="row">
+        <div class="col-sm-3">
+            <nav class="nav flex-column">
+                <a class="nav-link active" asp-area="" asp-page="../RPage/EditPage">General</a>
+                <a class="nav-link"  asp-area="" asp-page="../RPage/EditSocialMedia">Social Media</a>
+                <a class="nav-link" asp-route-day="1" asp-area="" asp-page="../RPage/EditDay">Monday</a>
+                <a class="nav-link" asp-route-day="2" asp-area="" asp-page="../RPage/EditDay">Tuesday</a>
+                <a class="nav-link" asp-route-day="3" asp-area="" asp-page="../RPage/EditDay">Wendsday</a>
+                <a class="nav-link" asp-route-day="4" asp-area="" asp-page="../RPage/EditDay">Thursday</a>
+                <a class="nav-link" asp-route-day="5" asp-area="" asp-page="../RPage/EditDay">Friday</a>
+                <a class="nav-link" asp-route-day="6" asp-area="" asp-page="../RPage/EditDay">Saturday</a>
+                <a class="nav-link" asp-route-day="7"  asp-area="" asp-page="../RPage/EditDay">Sunday</a>
+            </nav>
+        </div>
+
+        <div class="col">
+            <main role="main" class="pb-3">
+                @RenderBody()
+                </main>
+        </div>
+    </div>

@@ -1,0 +1,105 @@
+﻿@page
+@model WebApplication1.EditDayModel
+@{
+    Layout = "~/Pages/Shared/_ResturauntEdit.cshtml";
+    ViewData["Title"] = "EditPage";
+
+}
+<h3>@Model.Day.DayName</h3>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Day.id" />
+    <input type="hidden" asp-for="Day.DayName" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Open-Time</label>
+            <input type="time" asp-for="Day.OpenTime" class="form-control" />
+            <span asp-validation-for="Day.OpenTime" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Close-Time</label>
+            <input type="time" asp-for="Day.CloseTime" class="form-control" />
+            <span asp-validation-for="Day.CloseTime" class="text-danger"></span>
+        </div>
+    </div>
+    <button type="submit" value="Save" class="btn btn-primary">Save</button>
+</form>
+
+<br />
+
+@for (int i = 0; i < Model.Deals.Count; i++)
+{
+    <br />
+
+    <form method="post" asp-page-handler="Update" asp-route-DealId=@Model.Deals[i].id asp-route-DayId=@Model.Day.id>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.Deals[i].id" />
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Item Name</label>
+                <input asp-for="@Model.Deals[i].ItemName" class="form-control" name="ItemName" />
+                <span asp-validation-for="@Model.Deals[i].ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Item Type</label>
+                <input asp-for="@Model.Deals[i].ItemType" class="form-control" name="ItemType" />
+                <span asp-validation-for="@Model.Deals[i].ItemType" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Item Type</label>
+                <input asp-for="@Model.Deals[i].ValueOff" class="form-control" name="ValueOff" />
+                <span asp-validation-for="@Model.Deals[i].ValueOff" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Start Time</label>
+                <input type="time" asp-for="@Model.Deals[i].StartTime" class="form-control" name="StartTime" />
+                <span asp-validation-for="@Model.Deals[i].StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">End Time</label>
+                <input type="time" asp-for="@Model.Deals[i].EndTime" class="form-control" name="EndTime" />
+                <span asp-validation-for="@Model.Deals[i].EndTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="inputEmail4">Add Tags</label>
+                <select class="selectpicker form-group" multiple data-live-search="true" data-selected-text-format="count" showTick="true" data_width="fit" name="Tags">
+                    @{
+                        foreach (var x in Model.Tags)
+                        {
+                            if (Model.Deals[i].TagsInter.Any(n => n.TagID == x.id))
+                            {
+                                <option selected="selected" value="@x.id">@x.TagName</option>
+                            }
+                            else
+                            {
+                                <option value="@x.id">@x.TagName</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" value="Save" class="btn btn-primary">Save</button>
+    </form>
+
+    <form method="post" asp-page-handler="Delete" asp-route-DealId=@Model.Deals[i].id asp-route-DayId=@Model.Day.id>
+        <button type="submit" class="btn btn-primary">
+            Remove Deal
+        </button>
+    </form>
+
+
+}
+
+<form method="post" asp-page-handler="Add" asp-route-did=@Model.Day.id>
+    <button type="submit" class="btn btn-primary">
+        Add Deal
+    </button>
+</form>
+

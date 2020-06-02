@@ -1,0 +1,84 @@
+﻿@page
+@model WebApplication1.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Resturaunt</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Name" class="control-label"></label>
+                <input asp-for="Resturaunt.Name" class="form-control" />
+                <span asp-validation-for="Resturaunt.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Owner" class="control-label"></label>
+                <input asp-for="Resturaunt.Owner" class="form-control" />
+                <span asp-validation-for="Resturaunt.Owner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Phone" class="control-label"></label>
+                <input asp-for="Resturaunt.Phone" class="form-control" />
+                <span asp-validation-for="Resturaunt.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Email" class="control-label"></label>
+                <input asp-for="Resturaunt.Email" class="form-control" />
+                <span asp-validation-for="Resturaunt.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Website" class="control-label"></label>
+                <input asp-for="Resturaunt.Website" class="form-control" />
+                <span asp-validation-for="Resturaunt.Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.Country" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.Country" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.State" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.State" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.City" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.City" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.AddressLine1" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.AddressLine1" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.AddressLine2" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.AddressLine2" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resturaunt.Address.Zip" class="control-label"></label>
+                <input asp-for="Resturaunt.Address.Zip" class="form-control" />
+                <span asp-validation-for="Resturaunt.Address.Zip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
