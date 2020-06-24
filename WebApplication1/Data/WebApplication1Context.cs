@@ -30,6 +30,8 @@ namespace WebApplication1.Data
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.TagsInter)
                 .HasForeignKey(pt => pt.TagID);
+
+            
         }
 
         public DbSet<User> User { get; set; }

@@ -1,0 +1,182 @@
+﻿@page "/"
+@model WebApplication1.MainPageModel
+@{
+    ViewData["Title"] = "MainPage";
+}
+
+<div style="background-image: url(Images/new-york-4582500_1920.jpg)" alt="Responsive image">
+    <div class="container-fluid">
+        <div class="Main-Title">
+            <h1 class="display-1 text-light" style="text-align: center;">Happy Times</h1>
+            <h2 class="display-5 text-light" style="text-align: center;">Find your Happy Time</h2>
+        </div>
+    </div>
+
+    <div class="container-fluid-2 " style="margin-top: 100px;">
+
+        <div class="card mx-auto shadow border-dark card-color" style="width: 30rem; margin-top:20px">
+            <div class="card-body">
+                <h5 class="card-title">Find Your Night Out</h5>
+                <form method="get">
+                    <div class="form-group">
+                        <label for="location">Enter A City</label>
+                        <input type="text" name="location" class="form-control" id="SearchInput">
+                    </div>
+                    <div class="form-group form-check">
+                        @if (Model.my_loc) {<input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1" checked> }
+                        else { <input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1">}
+                        <label class="form-check-label" for="my_location">Use My Location</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="search" class="form-control" id="SearchInput" aria-describedby="emailHelp" placeholder="Enter Search...">
+                    </div>
+                   
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="inputEmail4">Select Day</label>
+                            <select class="selectpicker form-group" data_width="fit" name="day">
+                                @{
+                                    int time = TimeManagement.GetDay();
+                                    if (Model.day != TimeManagement.GetDay()) { time = Model.day; }
+                                    @if (time == 0)
+                                    {
+                                        <option selected="selected" value="0">Monday</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="0">Monday</option>
+                                    }
+                                    @if (time == 1)
+                                    {
+                                        <option selected="selected" value="1">Tuesday</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">Tuesday</option>
+                                    }
+                                    @if (time == 2)
+                                    {
+                                        <option selected="selected" value="2">Wednesday</option>
+                                    }
+                                    else
+                                    {
+                            <option value="2">Wednesday</option>
+                                    }
+                                    @if (time == 3)
+                                    {
+                                        <option selected="selected" value="3">Thursday</option>
+                                    }
+                                    else
+                                    {
+                            <option value="3">Thursday</option>
+                                    }
+                                    @if (time == 4)
+                                    {
+                                        <option selected="selected" value="4">Friday</option>
+                                    }
+                                    else
+                                    {
+                            <option value="4">Friday</option>
+                                    }
+                                    @if (time == 5)
+                                    {
+                                        <option selected="selected" value="5">Saturday</option>
+                                    }
+                                    else
+                                    {
+                            <option value="5">Saturday</option>
+                                    }
+                                    @if (time == 6)
+                                    {
+                                        <option selected="selected" value="6">Sunday</option>
+                                    }
+                                    else
+                                    {
+                            <option value="6">Sunday</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+        @{ if (Model.Ranking == null)
+            {
+                
+                <div class="card mx-auto shadow border-dark card-color" style="width: 30rem; margin-top:20px">
+                    <div class="card-body">
+                        <h5 class="card-title">Here For Community</h5>
+
+                        <p class="card-body">Working to bring deals and new adventures to everyone. Just look up what deals you want and Happy Times finds the closest ones to you!</p>
+
+                    </div>
+                </div>
+
+                <div class="card mx-auto shadow border-dark card-color" style="width: 30rem; margin-top:20px">
+                    <div class="card-body">
+                        <h5 class="card-title">Are you a local buisness?</h5>
+
+                        <p class="card-body">Get free exposure and reach a larger audience. Think you have the best happy hour in town? Show it off! Happy times give you a new outlet to not only advertise but create a site that is easy to read and simple to understand</p>
+                        <p class="card-body">Sign Up or Sign In Now! Registration is free!</p>
+                        <form method="get">
+                            <div class="form-group">
+                                <button type="button" asp-page="../Login" class="btn btn-primary">Sign In!</button>
+                                <button type="button" asp-page="../User/CreateUser" class="btn btn-primary">Register!</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="container-fluid-2" style="height:1000px; margin-left:5%; margin-top:20px">
+
+        <div class="grid">
+            <div class="grid-sizer"></div>
+            @{
+                if (Model.Ranking != null)
+                {
+                    var ordered = Model.Ranking.OrderByDescending(n => n.Value);
+                    foreach (var i in ordered)
+                    {
+                        var r = Model.Resturaunts.Where(n => n.id == i.Key).First();
+                        string CurrentStart = "";
+                        string CurrentEnd = "";
+                        <div class="card card-color listed_card shadow-sm grid-item">
+                            <a asp-page="./UserResturauntPage" asp-route-id="@r.id">@r.Name</a>
+                            <p class="card-title mb-2">@r.ResturauntPage.Days.ToArray()[Model.day].OpenTime - @r.ResturauntPage.Days.ToArray()[Model.day].CloseTime</p>
+                            <p class="card-subtitle text-muted">Deals:</p>
+
+                            <div class="card-body col-8">
+                                <ul class="list-group list-group-flush">
+                                    @{
+                                        foreach (var x in r.ResturauntPage.Days.ToArray()[Model.day].Deals)
+                                        {
+                                            <li class="list-group-item">
+                                                @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
+                                                {
+                                                    CurrentStart = x.StartTime;
+                                                    CurrentEnd = x.EndTime;
+                                                    <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
+                                                }
+                                                <p>@x.ItemName</p>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+

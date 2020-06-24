@@ -46,7 +46,7 @@ namespace WebApplication1
             resturauntPage.Days = new List<Day>();
             resturauntPage.Days.Add(new Day(){ DayName = "Monday" });
             resturauntPage.Days.Add(new Day() { DayName = "Tuesday" });
-            resturauntPage.Days.Add(new Day() { DayName = "Wendsday" });
+            resturauntPage.Days.Add(new Day() { DayName = "Wednesday" });
             resturauntPage.Days.Add(new Day() { DayName = "Thursday" });
             resturauntPage.Days.Add(new Day() { DayName = "Friday" });
             resturauntPage.Days.Add(new Day() { DayName = "Saturday" });

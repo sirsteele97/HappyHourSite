@@ -31,7 +31,7 @@ namespace WebApplication1
         [BindProperty]
         public Day Tuesday { get; set; }
         [BindProperty]
-        public Day Wendsday { get; set; }
+        public Day Wednesday { get; set; }
         [BindProperty]
         public Day Thursday { get; set; }
         [BindProperty]
@@ -71,7 +71,7 @@ namespace WebApplication1
             }
             Monday = days[0];
             Tuesday = days[1];
-            Wendsday = days[2];
+            Wednesday = days[2];
             Thursday = days[3];
             Friday = days[4];
             Saturday = days[5];
@@ -209,8 +209,6 @@ namespace WebApplication1
             d.ItemName = Request.Form["ItemName"];
             d.StartTime = (String)Request.Form["StartTime"];
             d.EndTime = (String)Request.Form["EndTime"];
-            d.ValueOff = int.Parse(Request.Form["ValueOff"]);
-            d.ItemType = Request.Form["ItemType"];
 
             _context.Attach(d).State = EntityState.Modified;
 
@@ -252,8 +250,8 @@ namespace WebApplication1
                     Day.DayName = "Tuesday";
                     break;
                 case 3:
-                    Day = Wendsday;
-                    Day.DayName = "Wendsday";
+                    Day = Wednesday;
+                    Day.DayName = "Wednesday";
                     break;
                 case 4:
                     Day = Thursday;

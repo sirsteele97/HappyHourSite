@@ -6,101 +6,111 @@
 <head>
     <link rel="stylesheet" href="~/css/General.css" />
 </head>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>@Model.Resturaunt.Name</h1>
-            <p>@Model.Resturaunt.ResturauntPage.Description</p>
-        </div>
-        <div class="col">
-            <img src="@Model.imageDataURL" style="height: 150px; width: 150px" />
-        </div>
+<div class="container-fluid">
+    <div style="text-align: center;">
+        <h1 class="display-3">@Model.Resturaunt.Name</h1>
+        <p>@Model.Resturaunt.ResturauntPage.Description</p>
+        <p><a>Website: MasonMordue.com</a></p>
+        <p><a>Menu: MasonMordue.com/Menu</a></p>
+        <p><a>Phone: @Model.Resturaunt.Phone</a></p>
+        <p><a>Email: @Model.Resturaunt.Email</a></p>
+        <img src="@Model.imageDataURL" style="height: 300px; width: 300px" />
     </div>
-
-    <br />
 </div>
-
-<div class="container day_row">
-    <div class="row">
+<div class="container-fluid">
+    <ul class="list-inline" style="text-align: center;">
         @{
-            int i = 1;
             int k = 1;
+            string CurrentStart = "";
+            string CurrentEnd = "";
             foreach (var d in Model.Resturaunt.ResturauntPage.Days)
             {
-                <div class="col-md" style="text-align: center">
-                    <div class="card border-dark day">
-                        <div class="card-header">
-                            @d.DayName
-                        </div>
-                        <div class="card-body">
-                            <p>Open: @d.OpenTime</p>
-                            <p>Close: @d.CloseTime</p>
-                        </div>
+                <li class="list-inline-item">
+                            <div class="card" style="width: 16rem; margin-top: 15px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@d.DayName</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Open: @d.OpenTime Close: @d.CloseTime</h6>
+                                    <ul class="list-group list-group-flush">
+
+
+
+                                        @foreach (var x in d.Deals)
+                                        {
+                                            <li class="list-group-item">
+                                                @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
+                                                {
+                                                    CurrentStart = x.StartTime;
+                                                    CurrentEnd = x.EndTime;
+
+                                                    <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
+
+                                                }
+                                                <p class="card-text">@x.ItemName</p>
+                                                <div class="row">
+                                                    <div class="col-1"></div>
+                                                    <div class="col-11">
+                                                        <p class="card-text">
+                                                            @x.Desription
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            k++;
+                                        }
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                </li>
+                } 
+            }
+            </ul>
+</div>
+
+    <div class="col-md social_media">
+        <div class="card border-dark day">
+            <div class="card-header">
+                Social Media
+            </div>
+            <div class=" card-body">
+                @{
+                    if (Model.Resturaunt.Website != null)
+                    {
                         <ul class="list-group list-group-flush">
-                            @{ foreach (var x in d.Deals)
-                                {
-                                    <li class="list-group-item">
-                                        @x.StartTime
-                                        @x.EndTime
-                                        @x.ItemName
-                                        @x.ItemType
-                                        @x.ValueOff
-                                    </li>
-                                    k++;
-                                }
-                            }
+                            <li class="list-group-item">
+                                Website:
+                                @Model.Resturaunt.Website
+                            </li>
                         </ul>
-                    </div>
-                </div>
-                i++;
-            }
-        }
-    </div>
-</div>
-<div class="col-md social_media">
-    <div class="card border-dark day">
-        <div class="card-header">
-            Social Media
-        </div>
-        <div class=" card-body">
-            @{
-                if (Model.Resturaunt.Website != null)
-                {
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            Website:
-                            @Model.Resturaunt.Website
-                        </li>
-                    </ul>
+                    }
+                    if (Model.ResturauntPage.Facebook != null)
+                    {
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                Facebook:
+                                @Model.ResturauntPage.Facebook
+                            </li>
+                        </ul>
+                    }
+                    if (Model.ResturauntPage.Twitter != null)
+                    {
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                Facebook:
+                                @Model.ResturauntPage.Twitter
+                            </li>
+                        </ul>
+                    }
+                    if (Model.ResturauntPage.Instagram != null)
+                    {
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                Facebook:
+                                @Model.ResturauntPage.Instagram
+                            </li>
+                        </ul>
+                    }
                 }
-                if (Model.ResturauntPage.Facebook != null)
-                {
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            Facebook:
-                            @Model.ResturauntPage.Facebook
-                        </li>
-                    </ul>
-                }
-                if (Model.ResturauntPage.Twitter != null)
-                {
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            Facebook:
-                            @Model.ResturauntPage.Twitter
-                        </li>
-                    </ul>
-                }
-                if (Model.ResturauntPage.Instagram != null)
-                {
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            Facebook:
-                            @Model.ResturauntPage.Instagram
-                        </li>
-                    </ul>
-                }
-            }
+            </div>
         </div>
     </div>
-</div>

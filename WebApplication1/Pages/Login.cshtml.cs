@@ -29,13 +29,9 @@ namespace WebApplication1
         // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
             User u = new User();
-            u = await _context.User.FirstOrDefaultAsync(m => m.Password == User.Password && m.Username == User.Username);
+            u = await _context.User.FirstOrDefaultAsync(m => m.Password == Request.Form["password"].ToString() && m.Username == Request.Form["username"].ToString());
 
             if(u != null)
             {

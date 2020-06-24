@@ -63,8 +63,6 @@
                                         @x.StartTime
                                         @x.EndTime
                                         @x.ItemName
-                                        @x.ItemType
-                                        @x.ValueOff
 
                                         <form method="post">
                                             <button type="button" on-click="@{Model.Deal = x;} " class="btn btn-primary" data-toggle="modal" data-target="#DealEditor_@k" ><img src="~/icons/gear.svg" /></button>
@@ -186,16 +184,6 @@
                                             <input asp-for="@x.ItemName" class="form-control" name="ItemName" />
                                             <span asp-validation-for="@x.ItemName" class="text-danger"></span>
                                         </div>
-                                        <div class="form-group">
-                                            <label asp-for="@x.ItemType" class="control-label"></label>
-                                            <input asp-for="@x.ItemType" class="form-control" name="ItemType" />
-                                            <span asp-validation-for="@x.ItemType" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="@x.ValueOff" class="control-label"></label>
-                                            <input asp-for="@x.ValueOff" class="form-control" name="ValueOff" />
-                                            <span asp-validation-for="@x.ValueOff" class="text-danger"></span>
-                                        </div>
                                         <select class="multiselect" multiple="multiple" id="select1">
                                             @{
                                                 foreach (var z in Model.Tags)
@@ -258,16 +246,6 @@
                                             <label asp-for="Deal.ItemName" class="control-label"></label>
                                             <input asp-for="Deal.ItemName" class="form-control" />
                                             <span asp-validation-for="Deal.ItemName" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Deal.ItemType" class="control-label"></label>
-                                            <input asp-for="Deal.ItemType" class="form-control" />
-                                            <span asp-validation-for="Deal.ItemType" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Deal.ValueOff" class="control-label"></label>
-                                            <input asp-for="Deal.ValueOff" class="form-control" />
-                                            <span asp-validation-for="Deal.ValueOff" class="text-danger"></span>
                                         </div>
                                         <select class="multiselect" multiple="multiple" id="select2">
                                             @{
@@ -451,16 +429,16 @@
                         <div class="col-md-4">
                             <form method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="Wendsday.id" />
+                                <input type="hidden" asp-for="Wednesday.id" />
                                 <div class="form-group">
-                                    <label asp-for="Wendsday.OpenTime" class="control-label"></label>
-                                    <input asp-for="Wendsday.OpenTime" class="form-control" />
-                                    <span asp-validation-for="Wendsday.OpenTime" class="text-danger"></span>
+                                    <label asp-for="Wednesday.OpenTime" class="control-label"></label>
+                                    <input asp-for="Wednesday.OpenTime" class="form-control" />
+                                    <span asp-validation-for="Wednesday.OpenTime" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Wendsday.CloseTime" class="control-label"></label>
-                                    <input asp-for="Wendsday.CloseTime" class="form-control" />
-                                    <span asp-validation-for="Wendsday.CloseTime" class="text-danger"></span>
+                                    <label asp-for="Wednesday.CloseTime" class="control-label"></label>
+                                    <input asp-for="Wednesday.CloseTime" class="form-control" />
+                                    <span asp-validation-for="Wednesday.CloseTime" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <input asp-route-did="3" asp-route-id="@Model.Resturaunt.id" type="submit" value="Save" class="btn btn-primary" />

@@ -46,7 +46,11 @@ namespace WebApplication1
         public void SetSession()
         {
             HttpContext.Session.SetInt32("user_id", user.id);
-            HttpContext.Session.SetInt32("company_id", user.Company.id);
+            if(user.Company != null)
+            {
+                HttpContext.Session.SetInt32("company_id", user.Company.id);
+            }
+            
         }
     }
 }

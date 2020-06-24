@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using Xamarin.Essentials;
 using Xamarin.Forms.PlatformConfiguration;
+using MaxMind.GeoIP2;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace WebApplication1
 {
@@ -32,6 +34,17 @@ namespace WebApplication1
             services.AddRazorPages();
 
             services.AddMemoryCache();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
+            // Configure to read configuration options from MaxMind section
+            services.Configure<WebServiceClientOptions>(Configuration.GetSection("MaxMind"));
+
+            // Configure dependency injection for WebServiceClient
+            services.AddHttpClient<WebServiceClient>();
 
             services.AddDbContext<WebApplication1Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WebApplication1Context")));
@@ -55,7 +68,10 @@ namespace WebApplication1
                 app.UseHsts();
             }
 
-            
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseStaticFiles();
             app.UseSession();

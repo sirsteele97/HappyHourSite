@@ -1,0 +1,23 @@
+﻿@page
+@model WebApplication1.CSVManagerModel
+@{
+    Layout = "~/Pages/Shared/_ResturauntEdit.cshtml";
+    ViewData["Title"] = "CSVManager";
+}
+
+<h1>CSVManager</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Insert CSV File of Deals</label>
+            <input type="file" name="DealCSV" class="form-control" />
+        </div>
+    </div>
+    <p>THis CSV file must be in the order: DealName DealDescription StartTime EndTime DayOfWeek</p>
+    <button type="submit" value="Save" class="btn btn-primary">Save</button>
+</form>
+
+
+

@@ -32,8 +32,9 @@ namespace WebApplication1
         public int[] SelectedTags { get; set; }
         public async Task OnGetAsync(int id, int day)
         {
-            
 
+            Tags = new List<Tags>();
+            
             Byte[] OutVal;
             if (!HttpContext.Session.TryGetValue("current_resturaunt", out OutVal))
             {
@@ -62,7 +63,7 @@ namespace WebApplication1
                 case 3:
                     Day = await _context.Day.Include(m => m.Deals).FirstOrDefaultAsync(m => m.id == R.ResturauntPage.Days.ElementAt(2).id);
                     Deals = Day.Deals;
-                    Day.DayName = "Wendsday";
+                    Day.DayName = "Wednesday";
                     break;
                 case 4:
                     Day = await _context.Day.Include(m => m.Deals).FirstOrDefaultAsync(m => m.id == R.ResturauntPage.Days.ElementAt(3).id);
@@ -98,6 +99,26 @@ namespace WebApplication1
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Day.OpenTime = (String)Request.Form["OpenTime"];
+            if(int.Parse(Day.OpenTime.Substring(0,2)) > 12)
+            {
+                Day.OpenTime = (int.Parse(Day.OpenTime.Substring(0, 2)) % 12).ToString() + ":" + Day.OpenTime.Substring(2, 2) + "PM";
+            }
+            else
+            {
+                Day.OpenTime += "AM";
+            }
+            Day.CloseTime = (String)Request.Form["CloseTime"];
+
+            if (int.Parse(Day.CloseTime.Substring(0, 2)) > 12)
+            {
+                Day.CloseTime = (int.Parse(Day.CloseTime.Substring(0, 2)) % 12).ToString() + ":" + Day.CloseTime.Substring(2, 2) + "PM";
+            }
+            else
+            {
+                Day.CloseTime += "AM";
+            }
+
             _context.Attach(Day).State = EntityState.Modified;
 
             try
@@ -177,7 +198,9 @@ namespace WebApplication1
 
             Deal d = await _context.Deal.Include(m => m.TagsInter).FirstOrDefaultAsync(m => m.id == DealId);
 
-            var Tags = Request.Form["Tags"].ToArray();
+            Tags = _context.Tags.ToList();
+
+            var SelectedTags = Request.Form["Tags"].ToArray();
 
             if (!ModelState.IsValid)
             {
@@ -187,14 +210,13 @@ namespace WebApplication1
             d.ItemName = Request.Form["ItemName"];
             d.StartTime = (String)Request.Form["StartTime"];
             d.EndTime = (String)Request.Form["EndTime"];
-            d.ValueOff = int.Parse(Request.Form["ValueOff"]);
-            d.ItemType = Request.Form["ItemType"];
+            d.Desription = Request.Form["Description"];
 
             d.TagsInter.Clear();
 
-            foreach(var t in Tags)
+            foreach(var t in SelectedTags)
             {
-                d.TagsInter.Add(new TagsInter() { TagID = int.Parse(t), DealID = d.id}) ;
+                d.TagsInter.Add(new TagsInter() { TagID = int.Parse(t), DealID = d.id, Deal = d, Tag = Tags.Where(n => n.id == int.Parse(t)).FirstOrDefault() }) ;
             }
 
             _context.Attach(d).State = EntityState.Modified;
@@ -229,7 +251,7 @@ namespace WebApplication1
                 case "Tuesday":
                     DayId = 2;
                     break;
-                case "Wendsday":
+                case "Wednesday":
                     DayId = 3;
                     break;
                 case "Thursday":

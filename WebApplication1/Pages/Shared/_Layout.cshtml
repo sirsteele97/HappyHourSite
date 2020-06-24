@@ -27,8 +27,8 @@
 <body>
     <header>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow background-dark">
+            <div class="container-fluid-2">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">WebApplication1</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -37,24 +37,24 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         @if (Context.Session.GetString("user_id") != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Logout">Logout</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/User/UserPage">Management</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/User/UserPage">Management</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Login">Login</a>
                             </li>
                         }
 
@@ -63,13 +63,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container-fluid-2">
+        <main>
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted background-dark" style="position: relative; bottom:0">
         <div class="container">
             &copy; 2020 - WebApplication1 - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
@@ -88,6 +88,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script src="https://unpkg.com/packery@2/dist/packery.pkgd.min.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -95,6 +96,15 @@
 
             });
         });
+
+    </script>
+    <script>
+            $('.grid').packery({
+                // options
+                itemSelector: '.grid-sizer',
+                columnWidth: '.grid-item',
+                percentPosition: true
+            });
 
     </script>
 

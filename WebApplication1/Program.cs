@@ -13,6 +13,7 @@ namespace WebApplication1
     {
         public static void Main(string[] args)
         {
+            
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -22,5 +23,7 @@ namespace WebApplication1
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+
     }
 }
