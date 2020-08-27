@@ -39,17 +39,22 @@ namespace WebApplication1
             this.day = day;
             this.my_loc = my_location;
             string remoteIpAddress = "";
+
             if ((bool)my_location)
                 {
+
+                Resturaunts = _context.Resturaunt
+                    .Include(m => m.ResturauntPage)
+                        .ThenInclude(n => n.Days)
+                    .Include(n => n.Location)
+                    .Include(n => n.Address)
+                    .ToList();
 
                 remoteIpAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 if (Request.Headers.ContainsKey("X-Forwarded-For"))
                     remoteIpAddress = Request.Headers["X-Forwarded-For"];
 
-                Resturaunts = _context.Resturaunt
-                        .Include(m => m.ResturauntPage)
-                            .ThenInclude(n => n.Days)
-                        .Include(n => n.Location).ToList();
+
                 //I am forcing my IP Fix before outside testing!!!!!
                 Resturaunts = Resturaunts.Where(n => Xamarin.Essentials.Location.CalculateDistance(new Xamarin.Essentials.Location(n.Location.Lang, n.Location.Long), new LocationConverter().Get("2605:a000:ee44:e800::6").Result, DistanceUnits.Miles) <= 20).ToList();
                 }
@@ -57,11 +62,17 @@ namespace WebApplication1
                 {
                     if (location != null)
                     {
-                        Resturaunts = _context.Resturaunt.Where(n => n.Address.City.ToLower().Equals(location.ToLower())).Include(n => n.Location).Include(m => m.ResturauntPage).ThenInclude(n => n.Days).ToList();
-                    }
+                        Resturaunts = _context.Resturaunt
+                        .Where(n=> n.Address.City == location)
+                            .Include(m => m.ResturauntPage)
+                                .ThenInclude(n => n.Days)
+                            .Include(n => n.Location)
+                            .Include(n => n.Address)
+                            .ToList();
+                }
                     else
                     {
-                        Resturaunts = _context.Resturaunt.Include(m => m.ResturauntPage).ThenInclude(n => n.Days).Include(n => n.Location).ToList();
+                        
                     }
                 }
                 
@@ -92,7 +103,7 @@ namespace WebApplication1
 
                 }
 
-                if (my_location == true)
+                if (my_location == true || location != null)
                 {
                     if (Ranking == null)
                     {
@@ -111,9 +122,9 @@ namespace WebApplication1
                 }
 
 
-                if (search != null)
+                if (location != null)
                 {
-                    SearchLine = search.ToLower();
+                    SearchLine = location.ToLower();
                     if (Ranking == null)
                     {
                         Ranking = new Dictionary<int, int>();
@@ -159,6 +170,9 @@ namespace WebApplication1
                         {
                             Ranking.Add(r.id, rank);
                         }
+
+                        
+
                         
                     }
                 }
@@ -169,7 +183,17 @@ namespace WebApplication1
                
             }
 
-            
+            if(Ranking != null)
+            {
+                Locations = new List<Models.Location>();
+                foreach (var i in Ranking.Keys)
+                {
+                    
+                    Locations.Add(_context.Location.FirstOrDefault(n => n.ResturauntId == i));
+                }
+            }
+
+
             return Page();
         }
         public void OnGetSearch(String search)

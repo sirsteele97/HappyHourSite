@@ -14,59 +14,10 @@
         <p><a>Menu: MasonMordue.com/Menu</a></p>
         <p><a>Phone: @Model.Resturaunt.Phone</a></p>
         <p><a>Email: @Model.Resturaunt.Email</a></p>
-        <img src="@Model.imageDataURL" style="height: 300px; width: 300px" />
+        
     </div>
 </div>
-<div class="container-fluid">
-    <ul class="list-inline" style="text-align: center;">
-        @{
-            int k = 1;
-            string CurrentStart = "";
-            string CurrentEnd = "";
-            foreach (var d in Model.Resturaunt.ResturauntPage.Days)
-            {
-                <li class="list-inline-item">
-                            <div class="card" style="width: 16rem; margin-top: 15px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">@d.DayName</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Open: @d.OpenTime Close: @d.CloseTime</h6>
-                                    <ul class="list-group list-group-flush">
-
-
-
-                                        @foreach (var x in d.Deals)
-                                        {
-                                            <li class="list-group-item">
-                                                @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
-                                                {
-                                                    CurrentStart = x.StartTime;
-                                                    CurrentEnd = x.EndTime;
-
-                                                    <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
-
-                                                }
-                                                <p class="card-text">@x.ItemName</p>
-                                                <div class="row">
-                                                    <div class="col-1"></div>
-                                                    <div class="col-11">
-                                                        <p class="card-text">
-                                                            @x.Desription
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            k++;
-                                        }
-                                    </ul>
-                                </div>
-                                
-                            </div>
-                </li>
-                } 
-            }
-            </ul>
-</div>
-
+<div class="row">
     <div class="col-md social_media">
         <div class="card border-dark day">
             <div class="card-header">
@@ -114,3 +65,59 @@
             </div>
         </div>
     </div>
+    <div class="col">
+        <img src="@Model.imageDataURL" style="height: 300px; width: 300px" />
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <ul class="list-inline" style="text-align: center;">
+        @{
+            int k = 1;
+            string CurrentStart = "";
+            string CurrentEnd = "";
+            foreach (var d in Model.Resturaunt.ResturauntPage.Days)
+            {
+                <li class="list-inline-item">
+                    <div class="card" style="width: 16rem; margin-top: 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title">@d.DayName</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Open: @d.OpenTime Close: @d.CloseTime</h6>
+                            <ul class="list-group list-group-flush">
+
+
+
+                                @foreach (var x in d.Deals)
+                                {
+                                    <li class="list-group-item">
+                                        @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
+                                        {
+                                            CurrentStart = x.StartTime;
+                                            CurrentEnd = x.EndTime;
+
+                                            <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
+
+                                        }
+                                        <p class="card-text">@x.ItemName</p>
+                                        <div class="row">
+                                            <div class="col-1"></div>
+                                            <div class="col-11">
+                                                <p class="card-text">
+                                                    @x.Desription
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    k++;
+                                }
+                            </ul>
+                        </div>
+
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+

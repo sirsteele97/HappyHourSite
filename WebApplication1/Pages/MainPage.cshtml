@@ -3,8 +3,21 @@
 @{
     ViewData["Title"] = "MainPage";
 }
-
-<div style="background-image: url(Images/new-york-4582500_1920.jpg)" alt="Responsive image">
+    <head>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+        <style>
+            #map {
+                position: relative;
+                z-index: 2;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+<div style="background-image: url(Images/new-york-4582500_1920.jpg); z-index:-1;" alt="Responsive image">
     <div class="container-fluid">
         <div class="Main-Title">
             <h1 class="display-1 text-light" style="text-align: center;">Happy Times</h1>
@@ -23,21 +36,22 @@
                         <input type="text" name="location" class="form-control" id="SearchInput">
                     </div>
                     <div class="form-group form-check">
-                        @if (Model.my_loc) {<input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1" checked> }
-                        else { <input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1">}
+                        @if (Model.my_loc)
+                        {<input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1" checked> }
+                        else
+                        { <input type="checkbox" name="my_location" value="true" class="form-check-input" id="exampleCheck1">}
                         <label class="form-check-label" for="my_location">Use My Location</label>
                     </div>
                     <div class="form-group">
                         <input type="text" name="search" class="form-control" id="SearchInput" aria-describedby="emailHelp" placeholder="Enter Search...">
                     </div>
-                   
+
                     <div class="form-row">
                         <div class="col-md-12">
                             <label for="inputEmail4">Select Day</label>
                             <select class="selectpicker form-group" data_width="fit" name="day">
                                 @{
                                     int time = TimeManagement.GetDay();
-                                    if (Model.day != TimeManagement.GetDay()) { time = Model.day; }
                                     @if (time == 0)
                                     {
                                         <option selected="selected" value="0">Monday</option>
@@ -60,7 +74,7 @@
                                     }
                                     else
                                     {
-                            <option value="2">Wednesday</option>
+                                        <option value="2">Wednesday</option>
                                     }
                                     @if (time == 3)
                                     {
@@ -68,7 +82,7 @@
                                     }
                                     else
                                     {
-                            <option value="3">Thursday</option>
+                                        <option value="3">Thursday</option>
                                     }
                                     @if (time == 4)
                                     {
@@ -76,7 +90,7 @@
                                     }
                                     else
                                     {
-                            <option value="4">Friday</option>
+                                        <option value="4">Friday</option>
                                     }
                                     @if (time == 5)
                                     {
@@ -84,7 +98,7 @@
                                     }
                                     else
                                     {
-                            <option value="5">Saturday</option>
+                                        <option value="5">Saturday</option>
                                     }
                                     @if (time == 6)
                                     {
@@ -92,7 +106,7 @@
                                     }
                                     else
                                     {
-                            <option value="6">Sunday</option>
+                                        <option value="6">Sunday</option>
                                     }
                                 }
 
@@ -105,7 +119,7 @@
         </div>
         @{ if (Model.Ranking == null)
             {
-                
+
                 <div class="card mx-auto shadow border-dark card-color" style="width: 30rem; margin-top:20px">
                     <div class="card-body">
                         <h5 class="card-title">Here For Community</h5>
@@ -139,6 +153,11 @@
         <div class="grid">
             <div class="grid-sizer"></div>
             @{
+                @if (Model.Locations != null)
+                {
+                   <div id='map' class="grid-item stamp" style='width: 500px; height: 500px; margin: 15px;'></div>
+
+                }
                 if (Model.Ranking != null)
                 {
                     var ordered = Model.Ranking.OrderByDescending(n => n.Value);
@@ -147,7 +166,7 @@
                         var r = Model.Resturaunts.Where(n => n.id == i.Key).First();
                         string CurrentStart = "";
                         string CurrentEnd = "";
-                        <div class="card card-color listed_card shadow-sm grid-item">
+                        <div class="card card-color listed_card shadow-sm grid-item grid-item-hover">
                             <a asp-page="./UserResturauntPage" asp-route-id="@r.id">@r.Name</a>
                             <p class="card-title mb-2">@r.ResturauntPage.Days.ToArray()[Model.day].OpenTime - @r.ResturauntPage.Days.ToArray()[Model.day].CloseTime</p>
                             <p class="card-subtitle text-muted">Deals:</p>
@@ -157,15 +176,16 @@
                                     @{
                                         foreach (var x in r.ResturauntPage.Days.ToArray()[Model.day].Deals)
                                         {
-                                            <li class="list-group-item">
-                                                @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
-                                                {
-                                                    CurrentStart = x.StartTime;
-                                                    CurrentEnd = x.EndTime;
-                                                    <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
-                                                }
-                                                <p>@x.ItemName</p>
-                                            </li>
+                                                                        <li class="list-group-item">
+                                                                            @if (!x.StartTime.Equals(CurrentStart) || !x.EndTime.Equals(CurrentEnd))
+                                                                            {
+                                                                                CurrentStart = x.StartTime;
+                                                                                CurrentEnd = x.EndTime;
+                                                                                <h6 class="card-subtitle mb-2 text-muted">@x.StartTime - @x.EndTime</h6>
+                                                                            }
+                                                                            <p>@x.ItemName</p>
+                                                                            <p>@x.Desription</p>
+                                                                        </li>
                                         }
                                     }
                                 </ul>
@@ -177,6 +197,54 @@
         </div>
     </div>
 </div>
+@if (Model.Locations != null)
+{
+
+    <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2lyc3RlZWxlOTciLCJhIjoiY2s2c25sMHJiMDM5ZjNmcXFuaXdteXBpZCJ9.rJrQ8DHzX-R_MHKw3cSTrA';
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-81.3455, 41.2405], // starting position
+            zoom: 12, // starting zoom
+            interactive: true
+        });
+
+@{
+    foreach (var loc in Model.Locations)
+    {
+
+        Models.Resturaunt r = Model.Resturaunts.FirstOrDefault(m => m.id == loc.ResturauntId);
+        <Text>
 
 
+        // create the popup
+        var popup = new mapboxgl.Popup({ offset: 25  }).setText('@r.Name');
 
+        new mapboxgl.Marker().setLngLat([@loc.Long, @loc.Lang]).setPopup(popup).addTo(map);
+
+        </Text>
+    }
+}
+
+
+        // Add zoom and rotation controls to the map.
+            map.addControl(new mapboxgl.NavigationControl());
+
+            map.addControl(
+                new mapboxgl.GeolocateControl({
+                positionOptions: {
+                enableHighAccuracy: true
+                },
+                trackUserLocation: true
+                })
+    );
+
+        $('#map').show();
+
+        //map.invalidateSize();
+
+    </script>
+
+}

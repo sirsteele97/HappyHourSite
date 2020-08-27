@@ -102,11 +102,12 @@ body {
     border: 2px solid hsla(0, 0%, 0%, 0.5);
 }
 
+
 .grid-item--width2 {
     width: 200px;
 }
 
-.grid-item:hover {
+.grid-item-hover:hover {
     animation-name: example;
     animation-duration: 1s;
 }
