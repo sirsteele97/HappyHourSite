@@ -26,7 +26,7 @@ namespace WebApplication1
         {
             HttpContext.Session.Clear();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./MainPage");
         }
     }
 }

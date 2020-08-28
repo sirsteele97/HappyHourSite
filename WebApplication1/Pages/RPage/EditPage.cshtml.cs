@@ -35,7 +35,10 @@ namespace WebApplication1
                 id = (int)HttpContext.Session.GetInt32("current_resturaunt");
             }
             
-            Resturaunt = await _context.Resturaunt.Include(m => m.Address).Include(m => m.ResturauntPage).FirstOrDefaultAsync(m => m.id == id);
+            Resturaunt = await _context.Resturaunt
+                .Include(m => m.Address)
+                .Include(m => m.ResturauntPage)
+                    .FirstOrDefaultAsync(m => m.id == id);
             
 
         }

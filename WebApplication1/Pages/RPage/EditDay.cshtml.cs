@@ -87,6 +87,7 @@ namespace WebApplication1
                     break;
             }
 
+            //preperation for tags
             foreach (var x in Day.Deals)
             {
                 _context.Entry(x)
@@ -100,24 +101,8 @@ namespace WebApplication1
         public async Task<IActionResult> OnPostAsync()
         {
             Day.OpenTime = (String)Request.Form["OpenTime"];
-            if(int.Parse(Day.OpenTime.Substring(0,2)) > 12)
-            {
-                Day.OpenTime = (int.Parse(Day.OpenTime.Substring(0, 2)) % 12).ToString() + ":" + Day.OpenTime.Substring(2, 2) + "PM";
-            }
-            else
-            {
-                Day.OpenTime += "AM";
-            }
+          
             Day.CloseTime = (String)Request.Form["CloseTime"];
-
-            if (int.Parse(Day.CloseTime.Substring(0, 2)) > 12)
-            {
-                Day.CloseTime = (int.Parse(Day.CloseTime.Substring(0, 2)) % 12).ToString() + ":" + Day.CloseTime.Substring(2, 2) + "PM";
-            }
-            else
-            {
-                Day.CloseTime += "AM";
-            }
 
             _context.Attach(Day).State = EntityState.Modified;
 

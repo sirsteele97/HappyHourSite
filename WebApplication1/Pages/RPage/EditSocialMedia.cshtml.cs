@@ -20,6 +20,7 @@ namespace WebApplication1
         }
 
         [BindProperty]
+        public ResturauntPage ResturauntPage { get; set; }
         public Resturaunt Resturaunt { get; set; }
 
         public async Task OnGetAsync(int id)
@@ -34,14 +35,14 @@ namespace WebApplication1
                 id = (int)HttpContext.Session.GetInt32("current_resturaunt");
             }
 
-            Resturaunt = await _context.Resturaunt.Include(m => m.Address).Include(m => m.ResturauntPage).FirstOrDefaultAsync(m => m.id == id);
-
+            Resturaunt = await _context.Resturaunt.Include(m => m.ResturauntPage).FirstOrDefaultAsync(m => m.id == id);
+            ResturauntPage = Resturaunt.ResturauntPage;
 
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            _context.Attach(Resturaunt).State = EntityState.Modified;
+            _context.Attach(ResturauntPage).State = EntityState.Modified;
 
             try
             {

@@ -9,6 +9,11 @@
 <form method="post" asp-route-Img="@Model.Resturaunt.ResturauntPage.Image" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Resturaunt.id" />
+    <input type="hidden" asp-for="Resturaunt.Email" />
+    <input type="hidden" asp-for="Resturaunt.Location" />
+    <input type="hidden" asp-for="Resturaunt.Phone" />
+    <input type="hidden" asp-for="Resturaunt.Website" />
+    <input type="hidden" asp-for="Resturaunt.Owner" />
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Buisness Name</label>
@@ -42,8 +47,16 @@
         </div>
         <div class="form-group col-md-2">
             <label for="inputZip">Zip</label>
-            <input asp-for="Resturaunt.Address.City" class="form-control" />
-            <span asp-validation-for="Resturaunt.Address.City" class="text-danger"></span>
+            <input asp-for="Resturaunt.Address.Zip" class="form-control" />
+            <span asp-validation-for="Resturaunt.Address.Zip" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="form-group col-md-2">
+            <label for="inputCountry">Country</label>
+            <input asp-for="Resturaunt.Address.Country" class="form-control" />
+            <span asp-validation-for="Resturaunt.Address.Country" class="text-danger"></span>
         </div>
 
 
