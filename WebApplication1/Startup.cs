@@ -40,12 +40,6 @@ namespace WebApplication1
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            // Configure to read configuration options from MaxMind section
-            services.Configure<WebServiceClientOptions>(Configuration.GetSection("MaxMind"));
-
-            // Configure dependency injection for WebServiceClient
-            services.AddHttpClient<WebServiceClient>();
-
             services.AddDbContext<WebApplication1Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WebApplication1Context")));
 

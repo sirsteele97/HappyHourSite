@@ -122,9 +122,9 @@ namespace WebApplication1
                 }
 
 
-                if (location != null)
+                if (search != null)
                 {
-                    SearchLine = location.ToLower();
+                    SearchLine = search.ToLower();
                     if (Ranking == null)
                     {
                         Ranking = new Dictionary<int, int>();
